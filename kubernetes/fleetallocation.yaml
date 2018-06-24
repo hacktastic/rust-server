@@ -1,0 +1,13 @@
+---
+apiVersion: "stable.agones.dev/v1alpha1"
+kind: FleetAllocation
+metadata:
+  # FleetAllocation Metadata
+  # https://v1-9.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.9/#objectmeta-v1-meta
+  # We recommend using the following to generate a unique name when creating FleetAllocations
+  # This will need to be created with `kubectl create` if using the command line tooling
+  generateName: rust-fleet-
+spec:
+  # The name of the fleet to allocate from. Must be an existing Fleet in the same namespace
+  # as this FleetAllocation
+  fleetName: rust-fleet
