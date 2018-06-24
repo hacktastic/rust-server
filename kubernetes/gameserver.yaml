@@ -13,17 +13,17 @@ spec:
   # - "dynamic" (default) the system allocates a free hostPort for the gameserver, for game clients to connect to
   # - "static", user defines the hostPort that the game client will connect to. Then onus is on the user to ensure that the
   # port is available. When static is the policy specified, `hostPort` is required to be populated
-  portPolicy: "static"
+  portPolicy: "dynamic"
   # the port that is being opened on the game server process
   containerPort: 28015
   # the port exposed on the host, only required when `portPolicy` is "static". Overwritten when portPolicy is "dynamic".
-  hostPort: 7777
+  #hostPort: 7777
   # protocol being used. Defaults to UDP. TCP is the only other option
   protocol: UDP
   # Health checking for the running game server
   health:
     # Disable health checking. defaults to false, but can be set to true
-    disabled: false
+    disabled: true
     # Number of seconds after the container has started before health check is initiated. Defaults to 5 seconds
     initialDelaySeconds: 5000
     # If the `Health()` function doesn't get called at least once every period (seconds), then
@@ -43,6 +43,13 @@ spec:
     spec:
       containers:
       - name: rust-server
-        image: my-rust-server
-        imagePullPolicy: Never
-
+        image: didstopia/rust-server
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /steamcmd/rust
+          name: persistence-volume
+      volumes:
+      - name: persistence-volume
+        hostPath: 
+          path: /rust-data
+          type: DirectoryOrCreate
